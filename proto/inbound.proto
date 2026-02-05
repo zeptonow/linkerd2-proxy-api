@@ -74,6 +74,9 @@ message ProxyProtocol {
     // If the protocol detected as HTTP, applicable rate limit.
     HttpLocalRateLimit http_local_rate_limit = 4;
 
+    // If the protocol detected as HTTP, applicable concurrency limit.
+    HttpLocalConcurrencyLimit http_local_concurrency_limit = 5;
+
     // Never implemented.
     reserved 2;
   }
@@ -82,7 +85,9 @@ message ProxyProtocol {
     repeated HttpRoute routes = 2;
 
     HttpLocalRateLimit local_rate_limit = 3;
- 
+
+    HttpLocalConcurrencyLimit local_concurrency_limit = 4;
+
     // Never implemented.
     reserved 1;
   }
@@ -91,6 +96,8 @@ message ProxyProtocol {
     repeated HttpRoute routes = 2;
 
     HttpLocalRateLimit local_rate_limit = 3;
+
+    HttpLocalConcurrencyLimit local_concurrency_limit = 4;
 
     // Never implemented.
     reserved 1;
@@ -270,4 +277,13 @@ message HttpLocalRateLimit {
   message Limit {
     uint32 requestsPerSecond = 1;
   }
+}
+
+message HttpLocalConcurrencyLimit {
+  // Describes the associated HTTPLocalConcurrencyLimitPolicy resource
+  io.linkerd.proxy.meta.Metadata metadata = 1;
+
+  // Maximum number of concurrent in-flight requests allowed for this server.
+  // If unset or 0, no concurrency limit is applied.
+  uint32 max_in_flight_requests = 2;
 }

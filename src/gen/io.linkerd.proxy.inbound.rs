@@ -51,6 +51,11 @@ pub mod proxy_protocol {
         /// If the protocol detected as HTTP, applicable rate limit.
         #[prost(message, optional, tag = "4")]
         pub http_local_rate_limit: ::core::option::Option<super::HttpLocalRateLimit>,
+        /// If the protocol detected as HTTP, applicable concurrency limit.
+        #[prost(message, optional, tag = "5")]
+        pub http_local_concurrency_limit: ::core::option::Option<
+            super::HttpLocalConcurrencyLimit,
+        >,
     }
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Http1 {
@@ -58,6 +63,10 @@ pub mod proxy_protocol {
         pub routes: ::prost::alloc::vec::Vec<super::HttpRoute>,
         #[prost(message, optional, tag = "3")]
         pub local_rate_limit: ::core::option::Option<super::HttpLocalRateLimit>,
+        #[prost(message, optional, tag = "4")]
+        pub local_concurrency_limit: ::core::option::Option<
+            super::HttpLocalConcurrencyLimit,
+        >,
     }
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Http2 {
@@ -65,6 +74,10 @@ pub mod proxy_protocol {
         pub routes: ::prost::alloc::vec::Vec<super::HttpRoute>,
         #[prost(message, optional, tag = "3")]
         pub local_rate_limit: ::core::option::Option<super::HttpLocalRateLimit>,
+        #[prost(message, optional, tag = "4")]
+        pub local_concurrency_limit: ::core::option::Option<
+            super::HttpLocalConcurrencyLimit,
+        >,
     }
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Grpc {
@@ -319,6 +332,16 @@ pub mod http_local_rate_limit {
         #[prost(uint32, tag = "1")]
         pub requests_per_second: u32,
     }
+}
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct HttpLocalConcurrencyLimit {
+    /// Describes the associated HTTPLocalConcurrencyLimitPolicy resource
+    #[prost(message, optional, tag = "1")]
+    pub metadata: ::core::option::Option<super::meta::Metadata>,
+    /// Maximum number of concurrent in-flight requests allowed for this server.
+    /// If unset or 0, no concurrency limit is applied.
+    #[prost(uint32, tag = "2")]
+    pub max_in_flight_requests: u32,
 }
 /// Generated client implementations.
 pub mod inbound_server_policies_client {
